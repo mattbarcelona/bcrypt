@@ -9,7 +9,17 @@ const {
 } = require("../middlewares/authMiddleware");
 
 router.get("/", (req, res) => {
-  const formLogin = `
+  if (req.session.token) {
+    const formLoogout = `
+    <h1>Hola</h1>
+    <a href="/dashboard">dashboard</a>
+    <form action="/logout"method="post">
+    <button type="submit">Cerrar sesión</button>
+    </form>
+    `;
+    res.send(formLoogout);
+  } else {
+    const formLogin = `
     <form action="/login"method="post">
     <label for="username">Usuario:</label>
     <input type="text" id="username" name="username" required><br>
@@ -22,7 +32,8 @@ router.get("/", (req, res) => {
     <a href="/dashboard">dashboard</a>
     `;
 
-  res.send(formLogin);
+    res.send(formLogin);
+  }
 });
 
 router.post("/login", (req, res) => {
